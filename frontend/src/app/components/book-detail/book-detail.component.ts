@@ -26,4 +26,5 @@ export class BookDetailComponent implements OnInit {
       .pipe(switchMap(id => this.bookService.getBook(id)))
   }
 
+
 }

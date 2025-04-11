@@ -1,1 +1,22 @@
-<pre>{{book$ | async | json}}</pre>
+<div class="table-container">
+    <table class="table" *ngIf="(book$ | async) as book">
+        <thead >
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> 
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.genre}}</td>
+                <td>{{book.year}}</td>
+                <td>{{book.status}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

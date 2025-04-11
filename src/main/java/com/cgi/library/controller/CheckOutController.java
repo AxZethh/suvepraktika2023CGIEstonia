@@ -17,23 +17,23 @@ public class CheckOutController {
     @Autowired
     private CheckOutService checkOutService;
 
-    @GetMapping(value = "getCheckouts")
+    @GetMapping("getCheckouts")
     public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable) {
         return ResponseEntity.ok(checkOutService.getCheckOuts(pageable));
     }
 
-    @GetMapping(value = "getCheckout")
+    @GetMapping( "getCheckout")
     public ResponseEntity<CheckOutDTO> getCheckOut(@RequestParam(value = "checkOutId") UUID checkOutId) {
         return ResponseEntity.ok(checkOutService.getCheckOut(checkOutId));
     }
 
-    @PostMapping(value = "checkout")
+    @PostMapping("addCheckout")
     public ResponseEntity<String> saveCheckOut(@RequestBody CheckOutDTO checkOutDTO) {
         checkOutService.saveCheckOut(checkOutDTO);
         return ResponseEntity.ok("");
     }
 
-    @DeleteMapping(value = "checkout")
+    @DeleteMapping("deleteCheckout")
     public ResponseEntity<String> deleteCheckOut(@RequestParam(value = "checkOutId") UUID checkOutId) {
         checkOutService.deleteCheckOut(checkOutId);
         return ResponseEntity.ok("");

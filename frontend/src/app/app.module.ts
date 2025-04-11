@@ -8,12 +8,16 @@ import { MaterialModule } from './material/material.module';
 import { BooksListComponent } from './components/books-list/books-list.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CheckoutsComponent } from './components/checkouts/checkouts.component';
+import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BooksListComponent,
-    BookDetailComponent
+    BookDetailComponent,
+    CheckoutsComponent,
+    CheckoutDetailComponent,
   ],
   imports: [
     BrowserModule,

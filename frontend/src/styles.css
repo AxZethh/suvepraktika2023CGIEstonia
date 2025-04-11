@@ -1,4 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: rgb(46, 45, 45);}
+  .table-container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+      color: #333;
+      border-bottom: 3px solid #064230;
+      border-left: 3px solid #064230;
+      border-right: 3px solid #064230;
+    }
+    
+    th {
+      background-color: #15a77b; 
+      color: white; 
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-right: 3px solid #064230;
+    }
+  
+    tr:nth-child(even) {
+      background-color: #f2f2f2; 
+    }
+  
+    tr:hover {
+      background-color: #e1e1e1; 
+    }
+  
+    .action-button {
+      padding: 8px 16px;
+      background-color: #28a745; 
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      
+      &:hover {
+        background-color: #218838;
+      }
+    }
+  }

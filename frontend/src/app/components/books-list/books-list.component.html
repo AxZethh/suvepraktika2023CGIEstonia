@@ -1,7 +1,17 @@
 <div class="container mat-elevation-z4">
   <mat-card>
-    <mat-card-title>Books</mat-card-title>
-    <mat-card-content>
+    <div *ngIf="formVisibility">
+      <app-add-book></app-add-book>
+    </div>
+    <mat-card-content *ngIf="!formVisibility">
+      <a mat-button color="primary" (click)="showForm()">Add Book</a> 
+        <div class="custom-select-container">
+          <mat-label>Page Size:</mat-label>
+          <mat-select [(ngModel)]="size">
+            <mat-option *ngFor="let sizeOption of pageSizes" [value]="sizeOption" (click)="getBooks()">{{sizeOption}}</mat-option>
+          </mat-select>
+        </div>
+        <mat-card-title>Books</mat-card-title>
       <mat-nav-list *ngIf="(books$ | async) as books">
         <a mat-list-item *ngFor="let book of books.content" [routerLink]="['/books', book.id]">
           {{book.title}}
@@ -9,6 +19,8 @@
       </mat-nav-list>
     </mat-card-content>
   </mat-card>
-  <button mat-raised-button>Next</button>
+  <mat-nav-list class="nav-buttons" *ngIf="!formVisibility">
+    <button mat-raised-button (click)="prevPage(this.currentPage)">Previous</button>
+    <button mat-raised-button (click)="nextPage(this.currentPage)">Next</button>
+  </mat-nav-list>
 </div>
-

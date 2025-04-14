@@ -10,7 +10,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-.table {
+  .table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ddd;
@@ -57,3 +57,33 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
       }
     }
   }
+
+  .management-buttons {
+      display: flex;
+      justify-content: flex-end;
+      
+      button {
+        margin-left: 4px;
+      }
+  }
+
+  .not-found {
+    padding-top: 15%;
+    padding-left: 32%;
+    font-size: 40px;
+    font-weight: bolder;
+    
+    a{
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+    }
+  }
+
+  .deletionSucess {
+    color: black;
+    font-weight: bolder;
+    font-size: 15px;
+    text-decoration: none;
+    justify-content: center;
+  }
+  

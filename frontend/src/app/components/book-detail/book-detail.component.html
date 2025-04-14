@@ -19,4 +19,9 @@
             </tr>
         </tbody>
     </table>
+    <div class="management-buttons">
+        <a [innerText]="message" [routerLink]="['/checkouts']" class="deletionSucess"></a>
+        <button mat-raised-button>Change</button>
+        <button mat-raised-button (click)="deleteBook()">Delete</button>
+    </div>
 </div>

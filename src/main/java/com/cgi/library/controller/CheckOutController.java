@@ -17,6 +17,7 @@ public class CheckOutController {
     @Autowired
     private CheckOutService checkOutService;
 
+
     @GetMapping("getCheckouts")
     public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable) {
         return ResponseEntity.ok(checkOutService.getCheckOuts(pageable));
@@ -34,8 +35,8 @@ public class CheckOutController {
     }
 
     @DeleteMapping("deleteCheckout")
-    public ResponseEntity<String> deleteCheckOut(@RequestParam(value = "checkOutId") UUID checkOutId) {
+    public ResponseEntity<String> deleteCheckOut(@RequestParam(value = "checkOutId") UUID checkOutId) throws RuntimeException {
         checkOutService.deleteCheckOut(checkOutId);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Delete Successful!");
     }
 }

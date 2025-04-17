@@ -18,14 +18,15 @@ public class CheckOutService {
     @Autowired
     private CheckOutRepository checkOutRepository;
 
+    ModelMapper modelMapper = ModelMapperFactory.getMapper();
+
     public Page<CheckOutDTO> getCheckOuts(Pageable pageable) {
-        ModelMapper modelMapper = ModelMapperFactory.getMapper();
         return checkOutRepository.findAll(pageable).map(checkOut -> modelMapper.map(checkOut, CheckOutDTO.class));
     }
 
     public CheckOutDTO getCheckOut(UUID checkOutId) {
         CheckOut checkOut = checkOutRepository.getOne(checkOutId);
-        return ModelMapperFactory.getMapper().map(checkOut, CheckOutDTO.class);
+        return modelMapper.map(checkOut, CheckOutDTO.class);
     }
 
     public void saveCheckOut(CheckOutDTO checkOutDTO) {

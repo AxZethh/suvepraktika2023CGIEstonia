@@ -1,0 +1,35 @@
+<div *ngIf="(checkout$ | async)  as checkout">
+    <div class="table-container" *ngIf="!deletionSuccess">
+        <table class="table" >
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Borrower First Name</th>
+                    <th>Borrower Last Name</th>
+                    <th>Status</th>
+                    <th>Checkout Date</th>
+                    <th>dueDate</th>
+                    <th>Date Returned</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr> 
+                    <td>{{checkout.borrowedBook.title}}</td>
+                    <td>{{checkout.borrowerFirstName}}</td>
+                    <td>{{checkout.borrowerLastName}}</td>
+                    <td>{{checkout.borrowedBook.status}}</td>
+                    <td>{{checkout.checkedOutDate}}</td>
+                    <td>{{checkout.dueDate}}</td>
+                    <td>{{checkout.returnedDate || 'Not Returned'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="management-buttons">
+            <button mat-raised-button>Change</button>
+            <button mat-raised-button (click)="deleteCheckout()">Delete</button>
+    </div>
+</div>
+    <div *ngIf="deletionSuccess">
+        <p><b>{{ message }}</b></p>
+    </div>
+</div>

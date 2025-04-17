@@ -5,8 +5,6 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { CheckoutsComponent } from './components/checkouts/checkouts.component';
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AddBookComponent } from './components/add-book/add-book.component';
-import { AddCheckoutComponent } from './components/add-checkout/add-checkout.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'books', pathMatch: 'full'},

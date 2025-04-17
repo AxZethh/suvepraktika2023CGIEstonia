@@ -3,18 +3,14 @@ package com.cgi.library.controller;
 import com.cgi.library.model.BookDTO;
 import com.cgi.library.model.BookStatus;
 import com.cgi.library.service.BookService;
-import jdk.jfr.ContentType;
-import org.hibernate.exception.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 @RestController
@@ -33,6 +29,12 @@ public class BookController {
     public ResponseEntity<BookDTO> getBook(@RequestParam(value = "bookId") UUID bookId) {
         return ResponseEntity.ok(bookService.getBook(bookId));
     }
+
+    @GetMapping("getBookByTitle")
+    public ResponseEntity<BookDTO> getBookByTitle(@RequestParam(value = "title") String title) {
+        return ResponseEntity.ok(bookService.getBookByTitle(title));
+    }
+
     @PostMapping("saveBook")
     public ResponseEntity<String> saveBook(@RequestBody BookDTO book) {
         book.setId(UUID.randomUUID());

@@ -1,8 +1,7 @@
 <!-- Navbar -->
 <mat-toolbar>
-  <a mat-button color="primary" routerLink="/">Library</a>
-  <a mat-button color="primary" routerLink="/checkouts">Checkouts</a>
-  <a mat-button color="primary" routerLink="/add-checkout">Add Checkout</a>
+  <a mat-button color="primary" routerLink="/books" [queryParams]="{view: 'list'}">Library</a>
+  <a mat-button color="primary" routerLink="/checkouts" [queryParams]="{view: 'list'}">Checkouts</a>
 
 </mat-toolbar>
 

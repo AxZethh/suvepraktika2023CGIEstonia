@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-title class="title">Add Book</mat-card-title>
+  <mat-card-content>
+    <div class="container">
+      <form [formGroup]="addBookForm" (ngSubmit)="addBook()" class="form">
+        <mat-label>Title</mat-label>
+        <input formControlName="title" placeholder="Man Of Action*">
+        <mat-label>Author</mat-label>
+        <input formControlName="author" type="string" placeholder="John Cena*">
+        <mat-label>Genre</mat-label>
+        <input formControlName="genre" type="string" placeholder="Sci-fi*">
+        <mat-label>Year</mat-label>
+        <input formControlName="year" type="number" placeholder="1999">
+        <button mat-raised-button [disabled]="addBookForm.invalid">Add</button>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

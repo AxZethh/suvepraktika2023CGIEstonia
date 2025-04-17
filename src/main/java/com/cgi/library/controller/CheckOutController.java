@@ -1,6 +1,7 @@
 package com.cgi.library.controller;
 
 import com.cgi.library.model.CheckOutDTO;
+import com.cgi.library.service.BookService;
 import com.cgi.library.service.CheckOutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +18,8 @@ public class CheckOutController {
 
     @Autowired
     private CheckOutService checkOutService;
-
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("getCheckouts")
     public ResponseEntity<Page<CheckOutDTO>> getCheckOuts(Pageable pageable) {
@@ -30,6 +33,10 @@ public class CheckOutController {
 
     @PostMapping("addCheckout")
     public ResponseEntity<String> saveCheckOut(@RequestBody CheckOutDTO checkOutDTO) {
+        checkOutDTO.setId(UUID.randomUUID());
+        checkOutDTO.setCheckedOutDate(LocalDate.now());
+        checkOutDTO.setBorrowedBook(bookService.getBookByTitle(checkOutDTO.getBorrowedBook().getTitle()));
+        checkOutDTO.setReturnedDate(null);
         checkOutService.saveCheckOut(checkOutDTO);
         return ResponseEntity.ok("");
     }

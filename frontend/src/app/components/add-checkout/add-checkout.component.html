@@ -1,0 +1,28 @@
+<mat-card>
+    <mat-card-title class="title">Add Checkout</mat-card-title>
+    <mat-card-content>
+        <div class="container">
+            <form [formGroup]="addCheckoutForm" (ngSubmit)="addCheckout()" class="form">
+                <mat-form-field appearance="fill">
+                    <mat-label>Borrower First Name:</mat-label>
+                    <input matInput formControlName="borrowerFirstName" type="string">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Borrower Last Name:</mat-label>
+                    <input matInput formControlName="borrowerLastName" type="string">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Borrowed Book:</mat-label>
+                    <input matInput formControlName="borrowedBook" type="string">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dueDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button [disabled]="addCheckoutForm.invalid">Add</button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

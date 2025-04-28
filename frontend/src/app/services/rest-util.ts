@@ -13,7 +13,7 @@ export class RestUtil {
       params = params.set('size', String(pageSize));
     }
     if (sort != null) {
-      params = params.set('sort', sort + ',' + direction ?? '');
+      params = params.set('sort', sort + ',' + (direction ?? ''));
     }
     return params;
   }

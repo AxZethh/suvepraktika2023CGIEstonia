@@ -5,6 +5,7 @@ import { Book } from '../models/book';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RestUtil } from './rest-util';
+import { BookStatus } from '../models/book-status';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,25 @@ export class BookService {
   getBooks(filter: Partial<PageRequest>): Observable<Page<Book>> {
     const url = this.baseUrl + '/getBooks';
     const params = RestUtil.buildParamsFromPageRequest(filter);
+    return this.http.get<Page<Book>>(url, {params});
+  }
+  getBooksByStatus(status: BookStatus, filter: Partial<PageRequest>): Observable<Page<Book>> {
+    const url = this.baseUrl + '/getBooksByStatus';
+    const params = new HttpParams()
+        .set('page', filter.pageIndex!)
+        .set('size', filter.pageSize!)
+        .set('sort', filter.sort!)
+        .set('status', status);
+    return this.http.get<Page<Book>>(url, {params});
+  }
+
+  getBooksContaining(title: string, filter: Partial<PageRequest>): Observable<Page<Book>> {
+    const url = this.baseUrl + '/getBooksByTitleContains';
+    const params = new HttpParams()
+        .set('page', filter.pageIndex!)
+        .set('size', filter.pageSize!)
+        .set('sort', filter.sort!)
+        .set('title', title);
     return this.http.get<Page<Book>>(url, {params});
   }
   
@@ -40,4 +60,8 @@ export class BookService {
     return this.http.delete<void>(url, {params});
   }
 
+  updateBook(changes: object) {
+    const url = this.baseUrl + '/updateBook';
+    return this.http.patch<Book>(url, changes);
+  }
 }

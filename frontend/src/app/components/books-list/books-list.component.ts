@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book.service';
-import { map, Observable } from 'rxjs';
-import { Page, PageRequest } from '../../models/page';
+import { Observable } from 'rxjs';
+import { Page, PageRequest, SortDirection } from '../../models/page';
 import { Book } from '../../models/book';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BookStatus } from 'src/app/models/book-status';
+
 @Component({
   selector: 'app-books-list',
   templateUrl: './books-list.component.html',
@@ -14,14 +16,36 @@ export class BooksListComponent implements OnInit {
   books$!: Observable<Page<Book>>;
   formVisibility: boolean = false;
   currentPage: number = 0;
-  size: number = 20;
-  pageSizes: number[] = [10,20,30];
-  filterBy: string[] = ["None","Available", "Borrowed", "Returned", "Damaged", "Processing"];
-  sortBy: string = "id";
-  direction: string = "desc"
-  filter: string = "";
   totalPages: number = 0;
+  freeTextQuery: string = "";
+  statusQuery: BookStatus = 'AVAILABLE';
+  
+  sortDirections: SortDirection[] = ['desc', 'asc'];
+  pageSizes: number[] = [10,20,30];
 
+  statuses = [
+   {label: "Available", value: "AVAILABLE"},
+   {label: "Borrowed", value: "BORROWED"},
+   {label: "Returned", value: "RETURNED"},
+   {label: "Damaged", value: "DAMAGED"},
+   {label: "Processing", value: "PROCESSING"}];
+
+  sorting = [
+    {label: "Title", value: "title"},
+    {label: "Author", value: "author"},
+    {label: "Genre", value: "genre"},
+    {label: "Year", value: "year"},
+    {label: "Added", value: "added"},
+    {label: "Popular", value: "checkOutCount"}
+  ]
+
+  pageRequest: PageRequest = {
+    pageIndex: 0,
+    pageSize: 20,
+    sort: 'checkOutCount',
+    direction: 'asc'
+  }
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -29,39 +53,62 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // TODO this observable should emit books taking into consideration pagination, sorting and filtering options.
     this.route.queryParams.subscribe(params => {
       if(params['view'] === 'list') {
         this.formVisibility = false;
       }
-      this.currentPage = params['page'] || 0;
+      this.getBooks();
     })
-    this.getBooks();
-    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+    
   }
   
   getBooks() {
-    this.books$ = this.bookService.getBooks(this.buildPageRequest())
+    this.books$ = this.bookService.getBooks(this.pageRequest);
+    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
+      queryParamsHandling: 'merge'
+     })
+  }
+
+  getBooksByTitleContains() {
+    this.books$ = this.bookService.getBooksContaining(this.freeTextQuery,this.pageRequest);
+    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
+      queryParamsHandling: 'merge'
+     })
+  }
+  getBooksByStatus() {
+    this.books$ = this.bookService.getBooksByStatus(this.statusQuery,this.pageRequest);
+    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
+      queryParamsHandling: 'merge'
+     })
   }
 
   nextPage() {
    this.router.navigate([], {
     relativeTo: this.route,
-    queryParams: {page: ++this.currentPage, size: this.size},  
+    queryParams: {page: ++this.pageRequest.pageIndex},  
     queryParamsHandling: 'merge'
    })
    this.getBooks();
-   this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+   this.getTotalPages();
   }
 
   prevPage() {
     this.router.navigate([], {
      relativeTo: this.route,
-     queryParams: {page: --this.currentPage, size: this.size},
+     queryParams: {page: --this.pageRequest.pageIndex},
      queryParamsHandling: 'merge'
     })
     this.getBooks();
-    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
+    this.getTotalPages();
    }
 
   showForm() {
@@ -73,13 +120,8 @@ export class BooksListComponent implements OnInit {
       this.formVisibility = true;
   }
 
-  buildPageRequest(): PageRequest {
-    return {
-      pageIndex: this.currentPage,
-      pageSize: this.size,
-      sort: this.sortBy,
-      direction: 'desc'
-    }
+  getTotalPages() {
+    this.books$.subscribe(page => this.totalPages = page.totalPages);
   }
 }
 

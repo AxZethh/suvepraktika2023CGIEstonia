@@ -1,27 +1,43 @@
 <div class="container mat-elevation-z4">
-  <mat-card>
-    <div *ngIf="formVisibility">
-      <app-add-checkout></app-add-checkout>
-    </div>
-    <mat-card-content *ngIf="!formVisibility">
-      <a mat-button color="primary" (click)="showForm()">Add Checkout</a>
-      <div class="custom-select-container">
+  <div *ngIf="formVisibility">
+    <app-add-checkout></app-add-checkout>
+  </div>
+  <mat-card class="content-card" *ngIf="!formVisibility">
+    <a mat-button color="primary" style="margin: auto" (click)="showForm()">Add Checkout</a>
+    <div class="custom-select-container">
+      <div class="freeText">
+        <mat-label>Find:</mat-label>
+        <input matInput [(ngModel)]="freeTextQuery">
+      </div>
+      <div class="sorting">
+        <mat-label>Sort:</mat-label>
+        <mat-select [(ngModel)]="pageRequest.sort" (selectionChange)="getCheckouts()" class="sort-select">
+          <mat-option *ngFor="let sort of sorting" [value]="sort.value">{{sort.label}}</mat-option>
+        </mat-select>
+        <mat-label>Sort Direction:</mat-label>
+        <mat-select [(ngModel)]="pageRequest.direction" (selectionChange)="getCheckouts()">
+          <mat-option *ngFor="let sortDirection of sortDirections"
+            [value]="sortDirection">{{sortDirection}}</mat-option>
+        </mat-select>
         <mat-label>Page Size:</mat-label>
-        <mat-select [(ngModel)]="size">
-          <mat-option *ngFor="let sizeOption of pageSizes" [value]="sizeOption"
-            (click)="getCheckouts()">{{sizeOption}}</mat-option>
+        <mat-select [(ngModel)]="pageRequest.pageSize" (selectionChange)="getCheckouts()">
+          <mat-option *ngFor="let sizeOption of pageSizes" [value]="sizeOption">{{sizeOption}}</mat-option>
         </mat-select>
       </div>
+    </div>
+    <div class="entity-card">
       <mat-card-title>Checkouts</mat-card-title>
       <mat-nav-list *ngIf="(checkouts$ | async) as checkouts">
         <a mat-list-item *ngFor="let checkout of checkouts.content" [routerLink]="['/checkouts', checkout.id]">
           {{checkout.borrowedBook.title}}
         </a>
       </mat-nav-list>
-    </mat-card-content>
+    </div>
   </mat-card>
+
   <mat-nav-list class="nav-buttons" *ngIf="!formVisibility">
-    <button mat-raised-button (click)="prevPage()" [disabled]="currentPage == 0">Previous</button>
-    <button mat-raised-button (click)="nextPage()">Next</button>
+    <button mat-raised-button (click)="prevPage()" [disabled]="this.pageRequest.pageIndex <= 0">Previous</button>
+    <button mat-raised-button (click)="nextPage()"
+      [disabled]="this.pageRequest.pageIndex >= this.totalPages-1">Next</button>
   </mat-nav-list>
 </div>

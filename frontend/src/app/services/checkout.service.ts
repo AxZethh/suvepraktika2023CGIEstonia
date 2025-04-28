@@ -27,9 +27,10 @@ export class CheckoutService {
     return this.http.get<Checkout>(url, {params});
   }
 
-  saveCheckout(checkout: Checkout): Observable<string> {
+  saveCheckout(title: string): Observable<string> {
     const url = this.baseUrl + "/addCheckout";
-    return this.http.post<string>(url, checkout);
+    const param = new HttpParams().set('title', title);
+    return this.http.post<string>(url, {param});
   }
 
   deleteCheckout(checkOutId: string): Observable<string> {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Checkout } from 'src/app/models/checkout';
 import { Page } from 'src/app/models/page';
 import { CheckoutService } from 'src/app/services/checkout.service';
+import { PageRequest,SortDirection } from 'src/app/models/page';
 
 @Component({
   selector: 'app-checkouts',
@@ -14,10 +15,26 @@ export class CheckoutsComponent implements OnInit {
 
   checkouts$!: Observable<Page<Checkout>>
   formVisibility: boolean = false;
+  freeTextQuery: string = "";
   currentPage: number = 0;
-  size: number = 20;
-  pageSizes: number[] = [10, 20, 30];
+  totalPages: number = 0;
 
+  pageSizes: number[] = [10, 20, 30];
+  sortDirections: SortDirection[] = ['desc', 'asc'];
+  sorting = [
+    {label: "Book", value: "borrowedBook"},
+    {label: "Checkout Date", value: "checkedOutDate"},
+    {label: "Due Date", value: "dueDate"},
+    {label: "Return Date", value: "returnedDate"}
+  ]
+
+  pageRequest: PageRequest = {
+    pageIndex: 0,
+    pageSize: 20,
+    sort: 'borrowedBook',
+    direction: 'asc'
+  }
+  
 
   constructor(
     private router: Router,
@@ -27,42 +44,46 @@ export class CheckoutsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => this.handleQueryParams(params));
+    this.route.queryParams.subscribe(params => {
+      if(params['view'] === 'list') {
+        this.formVisibility = false;
+      }
+      this.getCheckouts();
+    })
 
-    this.getCheckouts();
   }
 
   getCheckouts() {
-    this.checkouts$! = this.checkoutService.getCheckouts({
-      pageIndex: this.currentPage, pageSize: this.size
-    })
+    this.checkouts$! = this.checkoutService.getCheckouts(this.pageRequest);
+    this.checkouts$.subscribe(page => this.totalPages = page.totalPages);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
+      queryParamsHandling: 'merge'
+     })
   }
 
   nextPage() {
     this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { page: ++this.currentPage, size: this.size },
-      queryParamsHandling: 'merge'
+     relativeTo: this.route,
+     queryParams: {page: ++this.pageRequest.pageIndex},  
+     queryParamsHandling: 'merge'
     })
-
     this.getCheckouts();
-  }
+    this.getTotalPages();
+   }
   prevPage() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page: --this.currentPage, size: this.size },
+      queryParams: {page: --this.pageRequest.pageIndex},
       queryParamsHandling: 'merge'
-    })
-
-    this.getCheckouts();
+     })
+     this.getCheckouts();
+     this.getTotalPages();
+    
   }
 
-  handleQueryParams(params: Params) {
-      if(params['view'] === 'list') {
-        this.formVisibility = false;
-      }
-      this.currentPage = params['page'] || 0;
-  }
+  
 
   showForm() {
     this.router.navigate([], {
@@ -72,5 +93,10 @@ export class CheckoutsComponent implements OnInit {
     }
     )
     this.formVisibility = true;
+  }
+
+
+  getTotalPages() {
+    this.checkouts$.subscribe(page => this.totalPages = page.totalPages);
   }
 }

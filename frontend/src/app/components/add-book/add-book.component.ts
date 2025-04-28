@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { BookStatus } from 'src/app/models/book-status';
 import { BookService } from 'src/app/services/book.service';
 
 @Component({
@@ -10,7 +11,13 @@ import { BookService } from 'src/app/services/book.service';
 export class AddBookComponent implements OnInit {
 
   addBookForm!: FormGroup;
-
+  bookStatuses = [
+    {label:"Available", value: 'AVAILABLE'},
+    {label:"Borrowed", value: 'BORROWED'},
+    {label:"Returned", value:'RETURNED'},
+    {label:"Damaged", value:'DAMAGED'},
+    {label:"Processing", value: 'PROCESSING'},
+  ];
   constructor(
     private bookService: BookService,
   ){}
@@ -20,7 +27,8 @@ export class AddBookComponent implements OnInit {
       "title": new FormControl("", Validators.required),
       "author": new FormControl("", Validators.required),
       "genre": new FormControl("", Validators.required),
-      "year": new FormControl(""),
+      "year": new FormControl("", Validators.required),
+      "status": new FormControl("", Validators.required),
     })
   }
   

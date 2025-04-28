@@ -31,13 +31,24 @@ public class CheckOutController {
         return ResponseEntity.ok(checkOutService.getCheckOut(checkOutId));
     }
 
+    @GetMapping("getCheckoutsByBook")
+    public ResponseEntity<Page<CheckOutDTO>> getCheckOutsByBook(Pageable pageable, UUID bookId) {
+        return ResponseEntity.ok(checkOutService.getCheckOutsByBook(pageable, bookId));
+    }
+
     @PostMapping("addCheckout")
-    public ResponseEntity<String> saveCheckOut(@RequestBody CheckOutDTO checkOutDTO) {
-        checkOutDTO.setId(UUID.randomUUID());
-        checkOutDTO.setCheckedOutDate(LocalDate.now());
-        checkOutDTO.setBorrowedBook(bookService.getBookByTitle(checkOutDTO.getBorrowedBook().getTitle()));
-        checkOutDTO.setReturnedDate(null);
-        checkOutService.saveCheckOut(checkOutDTO);
+    public ResponseEntity<String> saveCheckOut(@RequestParam String title) {
+        CheckOutDTO checkout = new CheckOutDTO();
+
+        checkout.setBorrowerFirstName("Someone");
+        checkout.setBorrowerLastName("Someones Last Name");
+        checkout.setBorrowedBook(bookService.getBookByTitle(title));
+        checkout.setCheckedOutDate(LocalDate.now());
+        checkout.setDueDate(LocalDate.now().plusDays(14));
+        checkout.setReturnedDate(null);
+
+        checkOutService.saveCheckOut(checkout);
+
         return ResponseEntity.ok("");
     }
 

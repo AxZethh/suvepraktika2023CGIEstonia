@@ -1,15 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: rgb(46, 45, 45);}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-image: url(assets/images/627d1698-728e-498b-8a5f-b61911d6f7e8.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+
   .table-container {
     margin: 20px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: rgba(211, 208, 208, 0.9);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  
+
   .table {
     width: 100%;
     border-collapse: collapse;
@@ -21,50 +31,51 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
       text-align: left;
       font-size: 14px;
       color: #333;
-      border-bottom: 3px solid #064230;
+
       border-left: 3px solid #064230;
       border-right: 3px solid #064230;
     }
-    
+
     th {
-      background-color: #15a77b; 
-      color: white; 
+      background-color: rgb(82, 109, 117);
+      color: rgb(224, 218, 218);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      border-right: 3px solid #064230;
     }
+
+
+   
+  }
+  .container {
+    max-width: 1024px;
+    margin: 2em auto;
+  }
   
-    tr:nth-child(even) {
-      background-color: #f2f2f2; 
-    }
-  
-    tr:hover {
-      background-color: #e1e1e1; 
-    }
-  
-    .action-button {
-      padding: 8px 16px;
-      background-color: #28a745; 
-      border: none;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s;
-      
-      &:hover {
-        background-color: #218838;
-      }
+  .content-card {
+    background-color: rgba(211, 208, 208, 0.9);
+    box-shadow: 0px 20px 100px rgb(24, 12, 12);
+    border: 4px solid rgb(184, 150, 150);
+    border-radius: 8px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(61, 15, 6, 0.7);
+    border-radius: 8px;
+
+    button {
+      margin-right: 1%;
     }
   }
 
   .management-buttons {
-      display: flex;
-      justify-content: flex-end;
-      
-      button {
-        margin-left: 4px;
-      }
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 4px;
+    }
   }
 
   .not-found {
@@ -72,18 +83,99 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
     padding-left: 32%;
     font-size: 40px;
     font-weight: bolder;
-    
-    a{
+
+    a {
       color: rgb(255, 255, 255);
       text-decoration: none;
     }
   }
-
-  .deletionSucess {
-    color: black;
-    font-weight: bolder;
-    font-size: 15px;
-    text-decoration: none;
+  .add-x-title {
+    display: flex;
     justify-content: center;
   }
+
+  .add-x-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 30%;
   
+    button {
+      margin-top: 2%;
+      margin-left: 33%;
+      max-width: 33%;
+    }
+  }
+
+
+  .custom-select-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 280px;
+  
+    mat-form-field {
+      width: 100%;
+    }
+    mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+    }
+  
+    mat-select {
+      background-color: #e7dada;
+      border-radius: 8px;
+      padding: 0 0.3rem;
+      font-size: 14px;
+      font-weight: 500;
+      width: auto !important;
+      min-width: 65px !important;
+  
+      &.sort-select {
+        min-width: 100px !important;
+      }
+    }
+  
+    .freeText {
+      border-radius: 4px;
+      font-size: 16px;
+      padding-left: 1%;
+    }
+  
+    .sorting {
+      padding-right: 1%;
+    }
+  
+    mat-select-trigger {
+      color: #333;
+    }
+  
+    mat-select-panel {
+      background-color: #ffffff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      white-space: normal;
+    }
+
+    mat-label {
+      font-weight: bold;
+    }
+    
+    
+  }
+
+  .entity-card {
+    padding: 0 1% 0 1%;
+  }
+
+  a {
+    display: flex;
+    justify-self: center;
+    transition: background-color ease-in 225ms, transform ease-in 225ms;
+  }
+  a:hover {
+    background-color: #bbaaaa;
+    transform: scale(1.01);
+  }
+  
+  
+}

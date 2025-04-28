@@ -1,18 +1,30 @@
-<mat-card>
-  <mat-card-title class="title">Add Book</mat-card-title>
+<mat-card class="content-card">
+  <mat-card-title class="add-x-title">Add Book</mat-card-title>
   <mat-card-content>
-    <div class="container">
-      <form [formGroup]="addBookForm" (ngSubmit)="addBook()" class="form">
-        <mat-label>Title</mat-label>
-        <input formControlName="title" placeholder="Man Of Action*">
-        <mat-label>Author</mat-label>
-        <input formControlName="author" type="string" placeholder="John Cena*">
-        <mat-label>Genre</mat-label>
-        <input formControlName="genre" type="string" placeholder="Sci-fi*">
-        <mat-label>Year</mat-label>
-        <input formControlName="year" type="number" placeholder="1999">
+      <form [formGroup]="addBookForm" (ngSubmit)="addBook()" class="add-x-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" type="string">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+          <mat-label>Author</mat-label>
+          <input matInput formControlName="author" type="string">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+          <mat-label>Genre</mat-label>
+          <input matInput formControlName="genre" type="string">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+          <mat-label>Year</mat-label>
+          <input matInput formControlName="year" type="number">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let bookStatus of bookStatuses" [value]="bookStatus.value">{{bookStatus.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
         <button mat-raised-button [disabled]="addBookForm.invalid">Add</button>
       </form>
-    </div>
   </mat-card-content>
 </mat-card>

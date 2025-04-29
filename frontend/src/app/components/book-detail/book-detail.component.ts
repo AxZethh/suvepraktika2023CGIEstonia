@@ -5,7 +5,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { BookStatus } from 'src/app/models/book-status';
 import { BookUpdate } from 'src/app/models/bookUpdate';
 import { CheckoutService } from 'src/app/services/checkout.service';
-import { Checkout } from 'src/app/models/checkout';
 
 @Component({
   selector: 'app-book-detail',
@@ -13,6 +12,7 @@ import { Checkout } from 'src/app/models/checkout';
   styleUrls: ['./book-detail.component.scss']
 })
 export class BookDetailComponent implements OnInit {
+
   message: string = "";
   changeable: boolean = false;
   bookStatus: BookStatus = 'AVAILABLE';
@@ -68,8 +68,8 @@ export class BookDetailComponent implements OnInit {
       });
   }
 
-  checkOutBook() {
-    this.checkoutService.saveCheckout(this.bookUpdates.title);
+  checkout() {
+    this.checkoutService.saveCheckout(this.bookUpdates);
   }
 
   updateBook() { // WIP (left off here)

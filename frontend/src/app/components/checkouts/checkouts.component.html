@@ -1,13 +1,9 @@
 <div class="container mat-elevation-z4">
-  <div *ngIf="formVisibility">
-    <app-add-checkout></app-add-checkout>
-  </div>
   <mat-card class="content-card" *ngIf="!formVisibility">
-    <a mat-button color="primary" style="margin: auto" (click)="showForm()">Add Checkout</a>
     <div class="custom-select-container">
       <div class="freeText">
         <mat-label>Find:</mat-label>
-        <input matInput [(ngModel)]="freeTextQuery">
+        <input matInput [(ngModel)]="freeTextQuery" (ngModelChange)="getCheckoutsByTitleContains()">
       </div>
       <div class="sorting">
         <mat-label>Sort:</mat-label>
@@ -34,7 +30,6 @@
       </mat-nav-list>
     </div>
   </mat-card>
-
   <mat-nav-list class="nav-buttons" *ngIf="!formVisibility">
     <button mat-raised-button (click)="prevPage()" [disabled]="this.pageRequest.pageIndex <= 0">Previous</button>
     <button mat-raised-button (click)="nextPage()"

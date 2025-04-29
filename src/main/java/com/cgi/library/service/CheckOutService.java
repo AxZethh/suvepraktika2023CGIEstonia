@@ -5,19 +5,20 @@ import com.cgi.library.model.CheckOutDTO;
 import com.cgi.library.repository.CheckOutRepository;
 import com.cgi.library.util.ModelMapperFactory;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
 public class CheckOutService {
 
-    @Autowired
-    private CheckOutRepository checkOutRepository;
+    private final CheckOutRepository checkOutRepository;
+
+    public CheckOutService(CheckOutRepository checkOutRepository) {
+        this.checkOutRepository = checkOutRepository;
+    }
 
     ModelMapper modelMapper = ModelMapperFactory.getMapper();
 
@@ -43,8 +44,8 @@ public class CheckOutService {
        return checkOutRepository.findAllByBorrowedBook_Id(bookId, pageable).map(checkOut -> modelMapper.map(checkOut, CheckOutDTO.class));
     }
 
-    public boolean existsById(UUID id) {
-        return checkOutRepository.existsById(id);
+    public Page<CheckOutDTO> getCheckOutsByTitleContains(String title, Pageable pageable) {
+        return checkOutRepository.findAllByBorrowedBookTitleContainsIgnoreCase(title, pageable).map(checkOut -> modelMapper.map(checkOut, CheckOutDTO.class));
     }
 
     private UUID generateRandomUUID() {

@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map, Observable, switchMap } from 'rxjs';
 import { Checkout } from 'src/app/models/checkout';
 import { CheckoutService } from 'src/app/services/checkout.service';
@@ -15,8 +14,8 @@ export class CheckoutDetailComponent implements OnInit{
   
   checkout$!:  Observable<Checkout>;
   protected deletionSuccess!: boolean;
-
   message: string = "";
+  
   constructor(
     private route: ActivatedRoute,
     private checkoutService: CheckoutService,

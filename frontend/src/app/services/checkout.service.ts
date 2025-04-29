@@ -5,10 +5,12 @@ import { PageRequest, Page } from '../models/page';
 import { Observable } from 'rxjs';
 import { Checkout } from '../models/checkout';
 import { RestUtil } from './rest-util';
+import { BookUpdate } from '../models/bookUpdate';
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutService {
+  
 
   private readonly baseUrl = environment.backendUrl + "/api/checkout";
 
@@ -27,10 +29,19 @@ export class CheckoutService {
     return this.http.get<Checkout>(url, {params});
   }
 
-  saveCheckout(title: string): Observable<string> {
+  getCheckoutsContaining(title: string, filter: Partial<PageRequest>): Observable<Page<Checkout>> {
+    const url = this.baseUrl + "/getCheckoutsByTitleContains";
+    const params = new HttpParams()
+        .set('title', title)
+        .set('page', filter.pageIndex!)
+        .set('size', filter.pageSize!)
+        .set('sort', filter.sort! + "," + filter.direction!)
+    return this.http.get<Page<Checkout>>(url, {params});
+  }
+
+  saveCheckout(book: BookUpdate): Observable<string> {
     const url = this.baseUrl + "/addCheckout";
-    const param = new HttpParams().set('title', title);
-    return this.http.post<string>(url, {param});
+    return this.http.post<string>(url, book);
   }
 
   deleteCheckout(checkOutId: string): Observable<string> {

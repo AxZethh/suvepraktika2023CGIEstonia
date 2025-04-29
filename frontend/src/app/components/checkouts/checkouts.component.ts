@@ -5,6 +5,7 @@ import { Checkout } from 'src/app/models/checkout';
 import { Page } from 'src/app/models/page';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { PageRequest,SortDirection } from 'src/app/models/page';
+import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-checkouts',
@@ -21,6 +22,7 @@ export class CheckoutsComponent implements OnInit {
 
   pageSizes: number[] = [10, 20, 30];
   sortDirections: SortDirection[] = ['desc', 'asc'];
+  
   sorting = [
     {label: "Book", value: "borrowedBook"},
     {label: "Checkout Date", value: "checkedOutDate"},
@@ -39,7 +41,7 @@ export class CheckoutsComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private checkoutService: CheckoutService
+    private checkoutService: CheckoutService,
   ) {
   }
 
@@ -56,6 +58,16 @@ export class CheckoutsComponent implements OnInit {
   getCheckouts() {
     this.checkouts$! = this.checkoutService.getCheckouts(this.pageRequest);
     this.checkouts$.subscribe(page => this.totalPages = page.totalPages);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
+      queryParamsHandling: 'merge'
+     })
+  }
+
+  getCheckoutsByTitleContains() {
+    this.checkouts$ = this.checkoutService.getCheckoutsContaining(this.freeTextQuery, this.pageRequest);
+    this.checkouts$.subscribe(pages => this.totalPages = pages.totalPages);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
@@ -82,8 +94,6 @@ export class CheckoutsComponent implements OnInit {
      this.getTotalPages();
     
   }
-
-  
 
   showForm() {
     this.router.navigate([], {

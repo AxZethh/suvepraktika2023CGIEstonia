@@ -1,5 +1,7 @@
 package com.cgi.library.controller;
 
+import com.cgi.library.model.BookDTO;
+import com.cgi.library.model.BookStatus;
 import com.cgi.library.model.CheckOutDTO;
 import com.cgi.library.service.BookService;
 import com.cgi.library.service.CheckOutService;
@@ -35,14 +37,19 @@ public class CheckOutController {
     public ResponseEntity<Page<CheckOutDTO>> getCheckOutsByBook(Pageable pageable, UUID bookId) {
         return ResponseEntity.ok(checkOutService.getCheckOutsByBook(pageable, bookId));
     }
+    @GetMapping("getCheckoutsByTitleContains")
+    public ResponseEntity<Page<CheckOutDTO>> getCheckOutsByTitleContains(String title, Pageable pageable) {
+        return ResponseEntity.ok(checkOutService.getCheckOutsByTitleContains(title, pageable));
+    }
 
     @PostMapping("addCheckout")
-    public ResponseEntity<String> saveCheckOut(@RequestParam String title) {
+    public ResponseEntity<String> saveCheckOut(@RequestBody BookDTO book) {
         CheckOutDTO checkout = new CheckOutDTO();
 
         checkout.setBorrowerFirstName("Someone");
         checkout.setBorrowerLastName("Someones Last Name");
-        checkout.setBorrowedBook(bookService.getBookByTitle(title));
+        checkout.setBorrowedBook(bookService.getBook(book.getId()));
+        checkout.getBorrowedBook().setStatus(BookStatus.BORROWED);
         checkout.setCheckedOutDate(LocalDate.now());
         checkout.setDueDate(LocalDate.now().plusDays(14));
         checkout.setReturnedDate(null);

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Checkout } from 'src/app/models/checkout';
 import { CheckoutService } from 'src/app/services/checkout.service';
 
 @Component({
@@ -8,37 +7,38 @@ import { CheckoutService } from 'src/app/services/checkout.service';
   templateUrl: './add-checkout.component.html',
   styleUrls: ['./add-checkout.component.scss']
 })
-export class AddCheckoutComponent implements OnInit{
+export class AddCheckoutComponent{
 
 addCheckoutForm!: FormGroup;
 
 constructor(
-  private checkoutService: CheckoutService
-){}
+  //private checkoutService: CheckoutService,
+  ){}
 
-ngOnInit() {
-  this.addCheckoutForm = new FormGroup({
-    "borrowerFirstName": new FormControl("", Validators.required),
-    "borrowerLastName": new FormControl("", Validators.required),
-    "borrowedBook": new FormControl("", Validators.required),
-    "dueDate": new FormControl("", Validators.required),
-  })
-}
+// ngOnInit() {
+//   this.addCheckoutForm = new FormGroup({
+//     "borrowerFirstName": new FormControl("", Validators.required),
+//     "borrowerLastName": new FormControl("", Validators.required),
+//     "borrowedBook": new FormControl("", Validators.required),
+//     "dueDate": new FormControl("", Validators.required),
+//   })
+// }
 
-addCheckout() {
-  const formToSend = this.addCheckoutForm.value
-  const formattedDueDate = new Date(formToSend.dueDate).toISOString().split('T')[0];
-  const checkout: Checkout = {
-    ...formToSend,
-    "borrowedBook": {"title": formToSend.borrowedBook},
-    "dueDate": formattedDueDate,
-  }
-  console.log(formToSend.borrowedBook);
+
+
+// addCheckout() {
+//   const formToSend = this.addCheckoutForm.value
+//   const formattedDueDate = new Date(formToSend.dueDate).toISOString().split('T')[0];
+//   const checkout: Checkout = {
+//     ...formToSend,
+//     "dueDate": formattedDueDate,
+//   }
+//   console.log(formToSend.borrowedBook);
   
-  this.checkoutService.saveCheckout(checkout).subscribe({
-    next: (response) => console.log("New Checkouts ID: " + response),
-    error: (err) => console.log("Error Occured While adding Checkout!", err)
-  })
-}
+//   this.checkoutService.saveCheckout(checkout.borrowedBook).subscribe({
+//     next: (response) => console.log("New Checkouts ID: " + response),
+//     error: (err) => console.log("Error Occured While adding Checkout!", err)
+//   })
+// }
 
 }

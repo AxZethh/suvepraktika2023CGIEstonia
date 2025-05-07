@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { distinctUntilKeyChanged, Observable } from 'rxjs';
 import { Checkout } from 'src/app/models/checkout';
 import { Page } from 'src/app/models/page';
 import { CheckoutService } from 'src/app/services/checkout.service';
@@ -14,7 +14,7 @@ import { BookService } from 'src/app/services/book.service';
 })
 export class CheckoutsComponent implements OnInit {
 
-  checkouts$!: Observable<Page<Checkout>>
+  checkouts: Checkout[] = [];
   formVisibility: boolean = false;
   freeTextQuery: string = "";
   currentPage: number = 0;
@@ -46,53 +46,38 @@ export class CheckoutsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if(params['view'] === 'list') {
+    this.route.queryParams.pipe(distinctUntilKeyChanged('view')).subscribe(params => {
+      if(params['view'] === 'form') {
+        this.formVisibility = true;
+      } else {
         this.formVisibility = false;
+        this.getCheckouts();
       }
-      this.getCheckouts();
     })
-
   }
 
   getCheckouts() {
-    this.checkouts$! = this.checkoutService.getCheckouts(this.pageRequest);
-    this.checkouts$.subscribe(page => this.totalPages = page.totalPages);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
-      queryParamsHandling: 'merge'
-     })
+    this.checkoutService.getCheckouts(this.pageRequest).subscribe(pageOfCheckouts => {
+      this.checkouts = pageOfCheckouts.content;
+      this.totalPages = pageOfCheckouts.totalPages;
+      this.currentPage = pageOfCheckouts.number
+    });
   }
 
   getCheckoutsByTitleContains() {
-    this.checkouts$ = this.checkoutService.getCheckoutsContaining(this.freeTextQuery, this.pageRequest);
-    this.checkouts$.subscribe(pages => this.totalPages = pages.totalPages);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
-      queryParamsHandling: 'merge'
-     })
+    this.checkoutService.getCheckoutsContaining(this.freeTextQuery, this.pageRequest).subscribe(pageOfCheckouts => {
+       this.totalPages = pageOfCheckouts.totalPages;
+       this.checkouts = pageOfCheckouts.content;
+      });
   }
 
   nextPage() {
-    this.router.navigate([], {
-     relativeTo: this.route,
-     queryParams: {page: ++this.pageRequest.pageIndex},  
-     queryParamsHandling: 'merge'
-    })
+    this.pageRequest.pageIndex++;
     this.getCheckouts();
-    this.getTotalPages();
    }
   prevPage() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: --this.pageRequest.pageIndex},
-      queryParamsHandling: 'merge'
-     })
+    this.pageRequest.pageIndex--;
      this.getCheckouts();
-     this.getTotalPages();
-    
   }
 
   showForm() {
@@ -102,11 +87,5 @@ export class CheckoutsComponent implements OnInit {
       queryParamsHandling: 'merge'
     }
     )
-    this.formVisibility = true;
-  }
-
-
-  getTotalPages() {
-    this.checkouts$.subscribe(page => this.totalPages = page.totalPages);
   }
 }

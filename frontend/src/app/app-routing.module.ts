@@ -5,10 +5,14 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { CheckoutsComponent } from './components/checkouts/checkouts.component';
 import { CheckoutDetailComponent } from './components/checkout-detail/checkout-detail.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'books', pathMatch: 'full'},
   {path: 'books', component: BooksListComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
   {path: 'books/:id', component: BookDetailComponent},
   {path: 'checkouts', component: CheckoutsComponent},
   {path: 'checkouts/:id', component: CheckoutDetailComponent},

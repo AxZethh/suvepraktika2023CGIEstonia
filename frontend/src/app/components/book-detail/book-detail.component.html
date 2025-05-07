@@ -1,6 +1,6 @@
 <div class="table-container">
     <table class="table">
-        <thead >
+        <thead>
             <tr>
                 <th>Title</th>
                 <th>Author</th>
@@ -10,12 +10,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngIf="!changeable"> 
+            <tr *ngIf="!changeable">
                 <td>{{bookUpdates.title}}</td>
                 <td>{{bookUpdates.author}}</td>
                 <td>{{bookUpdates.genre}}</td>
                 <td>{{bookUpdates.year}}</td>
-                <td >{{bookUpdates.status}}</td>
+                <td>{{bookUpdates.status}}</td>
             </tr>
             <tr *ngIf="changeable">
                 <td>
@@ -31,17 +31,20 @@
                     <input matInput [(ngModel)]="bookUpdates.year" type="number">
                 </td>
                 <td>
-                <mat-select [(ngModel)]="bookUpdates.status" >
-                    <mat-option *ngFor="let status of bookStatuses" [value]="status.value">{{status.label}}</mat-option>
-                </mat-select>
+                    <mat-select [(ngModel)]="bookUpdates.status">
+                        <mat-option *ngFor="let status of bookStatuses"
+                            [value]="status.value">{{status.label}}</mat-option>
+                    </mat-select>
                 </td>
             </tr>
         </tbody>
     </table>
     <div class="management-buttons">
-        <a [innerText]="message" [routerLink]="['/checkouts']" class="deletionSuccess"></a>
+        <a [innerText]="message" [routerLink]="['/books']" class="deletionSuccess"></a>
         <button mat-raised-button (click)="checkout()" [disabled]="bookUpdates.status != 'AVAILABLE'">Checkout</button>
-        <button mat-raised-button (click)="isChangeable()">{{changeable ? 'Save' : 'Edit'}}</button>
-        <button mat-raised-button (click)="deleteBook()">Delete</button>
+        <div *ngIf="this.user !== null && this.admin">  
+            <button mat-raised-button (click)="isChangeable()">{{changeable ? 'Save' : 'Edit'}}</button>
+            <button mat-raised-button (click)="deleteBook()">Delete</button>
+        </div>
     </div>
 </div>

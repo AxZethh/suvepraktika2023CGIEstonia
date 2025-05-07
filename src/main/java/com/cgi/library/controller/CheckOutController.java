@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/checkout")
+@RequestMapping("/api/checkout/")
 public class CheckOutController {
 
     @Autowired

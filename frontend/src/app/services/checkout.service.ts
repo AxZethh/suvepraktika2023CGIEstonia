@@ -20,7 +20,9 @@ export class CheckoutService {
   getCheckouts(filter: Partial<PageRequest>): Observable<Page<Checkout>> {
     const url = this.baseUrl + "/getCheckouts";
     const params = RestUtil.buildParamsFromPageRequest(filter);
-    return this.http.get<Page<Checkout>>(url, {params});
+    return this.http.get<Page<Checkout>>(url, {params, headers: {
+      "Authorization": "Bearer " +  sessionStorage.getItem("token")
+    }});
   }
 
   getCheckout(checkOutId: string): Observable<Checkout> {

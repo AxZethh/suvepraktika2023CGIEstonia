@@ -5,6 +5,9 @@ import { map, switchMap } from 'rxjs/operators';
 import { BookStatus } from 'src/app/models/book-status';
 import { BookUpdate } from 'src/app/models/bookUpdate';
 import { CheckoutService } from 'src/app/services/checkout.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { User } from 'src/app/models/user';
+import { Role } from 'src/app/models/role';
 
 @Component({
   selector: 'app-book-detail',
@@ -16,6 +19,9 @@ export class BookDetailComponent implements OnInit {
   message: string = "";
   changeable: boolean = false;
   bookStatus: BookStatus = 'AVAILABLE';
+  user: User | null = {};
+  admin: boolean = false;
+  
   bookStatuses = [
     {label:"Available", value: 'AVAILABLE'},
     {label:"Borrowed", value: 'BORROWED'},
@@ -37,7 +43,8 @@ export class BookDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private bookService: BookService,
-    private checkoutService: CheckoutService
+    private checkoutService: CheckoutService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +61,11 @@ export class BookDetailComponent implements OnInit {
         });
       });
 
+      this.authService.userSubject.subscribe((user) => {
+        this.user = user;
+        this.authService.admin.subscribe((admin) => this.admin = admin);
+      }
+      )
   }
 
   deleteBook() {
@@ -72,7 +84,7 @@ export class BookDetailComponent implements OnInit {
     this.checkoutService.saveCheckout(this.bookUpdates);
   }
 
-  updateBook() { // WIP (left off here)
+  updateBook() { 
     this.bookService.updateBook(this.bookUpdates).subscribe({
       next:() => {
         this.message = "Book Updated successfully!"

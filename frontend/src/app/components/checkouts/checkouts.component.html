@@ -23,8 +23,8 @@
     </div>
     <div class="entity-card">
       <mat-card-title>Checkouts</mat-card-title>
-      <mat-nav-list *ngIf="(checkouts$ | async) as checkouts">
-        <a mat-list-item *ngFor="let checkout of checkouts.content" [routerLink]="['/checkouts', checkout.id]">
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let checkout of checkouts" [routerLink]="['/checkouts', checkout.id]">
           {{checkout.borrowedBook.title}}
         </a>
       </mat-nav-list>

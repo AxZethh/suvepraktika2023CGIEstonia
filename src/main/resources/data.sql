@@ -1336,3 +1336,7 @@ INSERT INTO checkout (id, borrower_first_name, borrower_last_name, book_id, chec
 ('70cac269-373a-4eb6-b90c-64a16ed318ae', 'Isreal', 'Corwin', '53905a3f-71bb-4c35-b26c-d9c9caf36f52', '2020-9-16', '2023-3-16'),
 ('2f3e58ab-b9a2-4b1d-a252-30fd2fcc452b', 'Janice', 'Ratke', '8238e1c1-c713-4eaf-9b3a-4b8df2465630', '2020-9-13', '2023-3-13'),
 ('b64b7493-e387-4f47-a146-f18bcfd0f584', 'Keenan', 'Bruen', 'ab1a8f87-272d-4ba0-93df-dbb8952909df', '2020-9-3', '2023-3-3');
+
+
+INSERT INTO user (id, first_name, last_name, email, password, user_role) VALUES
+('7a215867-e2ce-4587-822c-7d0849ecbd1e', 'test', 'librarian', 'Test@gmail.com', 'Something123', 1);

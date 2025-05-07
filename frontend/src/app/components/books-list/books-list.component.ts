@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book.service';
-import { Observable } from 'rxjs';
+import { distinctUntilKeyChanged, Observable } from 'rxjs';
 import { Page, PageRequest, SortDirection } from '../../models/page';
 import { Book } from '../../models/book';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,9 +13,8 @@ import { BookStatus } from 'src/app/models/book-status';
 })
 export class BooksListComponent implements OnInit {
 
-  books$!: Observable<Page<Book>>;
+  books!: Book[];
   formVisibility: boolean = false;
-  currentPage: number = 0;
   totalPages: number = 0;
   freeTextQuery: string = "";
   statusQuery: BookStatus = 'AVAILABLE';
@@ -53,62 +52,43 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if(params['view'] === 'list') {
+    this.route.queryParams.pipe(distinctUntilKeyChanged('view')).subscribe((params) => {
+      if(params['view'] == 'form') {
+        this.formVisibility = true;
+      } else {
         this.formVisibility = false;
+        this.getBooks();
       }
-      this.getBooks();
     })
-    
   }
   
   getBooks() {
-    this.books$ = this.bookService.getBooks(this.pageRequest);
-    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
-      queryParamsHandling: 'merge'
-     })
+    this.validatePage();
+    this.bookService.getBooks(this.pageRequest).subscribe((books) => {
+      this.books = books.content;
+      this.totalPages = books.totalPages -1;
+    });
   }
 
   getBooksByTitleContains() {
-    this.books$ = this.bookService.getBooksContaining(this.freeTextQuery,this.pageRequest);
-    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
-      queryParamsHandling: 'merge'
-     })
+    this.bookService.getBooksContaining(this.freeTextQuery,this.pageRequest).subscribe(pageOfBooks => 
+      this.totalPages = pageOfBooks.totalPages
+    );
   }
   getBooksByStatus() {
-    this.books$ = this.bookService.getBooksByStatus(this.statusQuery,this.pageRequest);
-    this.books$.subscribe(pages => this.totalPages = pages.totalPages);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {page: this.pageRequest.pageIndex, size: this.pageRequest.pageSize, sort: this.pageRequest.sort, direction: this.pageRequest.direction},  
-      queryParamsHandling: 'merge'
-     })
+    this.bookService.getBooksByStatus(this.statusQuery,this.pageRequest).subscribe(pageOfBooks => 
+      this.totalPages = pageOfBooks.totalPages
+    );
   }
 
   nextPage() {
-   this.router.navigate([], {
-    relativeTo: this.route,
-    queryParams: {page: ++this.pageRequest.pageIndex},  
-    queryParamsHandling: 'merge'
-   })
+   this.pageRequest.pageIndex++;
    this.getBooks();
-   this.getTotalPages();
   }
 
   prevPage() {
-    this.router.navigate([], {
-     relativeTo: this.route,
-     queryParams: {page: --this.pageRequest.pageIndex},
-     queryParamsHandling: 'merge'
-    })
+    this.pageRequest.pageIndex--;
     this.getBooks();
-    this.getTotalPages();
    }
 
   showForm() {
@@ -117,12 +97,18 @@ export class BooksListComponent implements OnInit {
         queryParams: {view: 'form'},
         queryParamsHandling: 'merge'
       })
-      this.formVisibility = true;
   }
 
-  getTotalPages() {
-    this.books$.subscribe(page => this.totalPages = page.totalPages);
+  validatePage(){
+    const page = this.pageRequest.pageIndex;
+    if(page < 0 ) {
+      this.pageRequest.pageIndex = 0;
+    } else if(page > this.totalPages) {
+      this.pageRequest.pageIndex = this.totalPages;
+    }
   }
+
+ 
 }
 
 

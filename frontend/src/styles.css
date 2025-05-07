@@ -42,9 +42,13 @@ body {
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+  }
 
-
-   
+  .status-message {
+    font-weight: bolder;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
   }
   .container {
     max-width: 1024px;
@@ -80,11 +84,11 @@ body {
 
   .not-found {
     padding-top: 15%;
-    padding-left: 32%;
+    padding-left: 34%;
     font-size: 40px;
     font-weight: bolder;
 
-    a {
+    .not-found-text {
       color: rgb(255, 255, 255);
       text-decoration: none;
     }

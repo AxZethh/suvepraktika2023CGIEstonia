@@ -24,9 +24,9 @@ public class BookController {
 
     @GetMapping( "getBooks")
     public ResponseEntity<Page<BookDTO>> getBooks(Pageable pageable) {
+        System.out.println(pageable.toString());
         return ResponseEntity.ok(bookService.getBooks(pageable));
     }
-
 
     @GetMapping("getBook")
     public ResponseEntity<BookDTO> getBook(@RequestParam(value = "bookId") UUID bookId) {

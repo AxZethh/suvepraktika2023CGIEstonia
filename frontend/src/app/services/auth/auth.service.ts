@@ -23,7 +23,7 @@ export class AuthService {
     const url = this.baseUrl + "/user";
     return this.http.get<User>(url).pipe(
       tap((user) => {
-        this.userSubject.next(user); 
+        this.userSubject.next(user);
         this.loggedIn.next(true);
         if(user.userRole === "LIBRARIAN" || user.userRole === "ADMIN") {
           this.admin.next(true);

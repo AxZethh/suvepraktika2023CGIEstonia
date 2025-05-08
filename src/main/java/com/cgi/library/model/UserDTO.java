@@ -46,7 +46,7 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public void setRole(UserRole userRole) {
+    public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
 }

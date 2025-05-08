@@ -7,16 +7,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class JwtUtil {
@@ -29,7 +24,7 @@ public class JwtUtil {
 
         String jwtBuilder = Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("Role", user.getRole())
+                .claim("Role", user.getUserRole())
                 .setExpiration(authToken.getExpiration())
                 .setIssuer("CGI Library")
                 .signWith(SECRET_KEY)

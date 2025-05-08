@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   title = 'frontend';
   loggedIn: boolean = false;
   admin: boolean = false;
+  
   constructor(private authService: AuthService) { }
 
   ngOnInit() {

@@ -61,11 +61,11 @@ public class User {
         this.password = password;
     }
 
-    public UserRole getRole() {
+    public UserRole getUserRole() {
         return userRole;
     }
 
-    public void setRole(UserRole userRole) {
+    public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
 }

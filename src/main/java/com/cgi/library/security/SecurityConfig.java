@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/book/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/checkout/*").hasRole("READER")
+                .antMatchers(HttpMethod.GET, "/api/checkout/*").hasAnyRole("READER", "LIBRARIAN", "ADMIN")
                 .anyRequest().authenticated();
 
     }

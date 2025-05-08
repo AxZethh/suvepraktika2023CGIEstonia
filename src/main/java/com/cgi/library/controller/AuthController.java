@@ -5,7 +5,6 @@ import com.cgi.library.model.AuthToken;
 import com.cgi.library.model.LoginRequest;
 import com.cgi.library.model.UserRole;
 import com.cgi.library.service.UserService;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody User newUser) {
         newUser.setId(UUID.randomUUID());
-        newUser.setRole(UserRole.READER);
+        newUser.setUserRole(UserRole.READER);
         userService.saveUser(newUser);
 
         return ResponseEntity.ok("Signup successful");

@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { distinctUntilKeyChanged, Observable } from 'rxjs';
 import { Checkout } from 'src/app/models/checkout';
-import { Page } from 'src/app/models/page';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { PageRequest,SortDirection } from 'src/app/models/page';
-import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-checkouts',
